@@ -20,6 +20,11 @@
  */
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/ssl.h>
+#include <deos.h>
+
+// TODO
+#define VirtualAddressTYP int*
+#define DWORD int
 
 #define ROUND_UP(x, align)  (((int) (x) + (align - 1)) & ~(align - 1))
 #define SIZEOF_HEADER sizeof(size_t)  /* tracks size of allocated block */

@@ -1366,6 +1366,7 @@ extern void uITRON4_free(void *p) ;
     #endif
 
     #define USE_FAST_MATH
+#define TFM_NO_ASM
     #define TFM_TIMING_RESISTANT
     #define ECC_TIMING_RESISTANT
     #define WC_RSA_BLINDING

@@ -2194,7 +2194,7 @@ time_t deos_time(time_t* timer)
 
     #if defined(CURRENT_UNIX_TIMESTAMP)
         /* CURRENT_UNIX_TIMESTAMP is seconds since Jan 01 1970. (UTC) */
-        return (time_t) *systemTickPtr/systemTickTimeInHz + CURRENT_UNIX_TIMESTAMP;
+        return (time_t) (*systemTickPtr/systemTickTimeInHz) + CURRENT_UNIX_TIMESTAMP;
     #else
         return (time_t) *systemTickPtr/systemTickTimeInHz;
     #endif
