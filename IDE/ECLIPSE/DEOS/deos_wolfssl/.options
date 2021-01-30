@@ -11,6 +11,7 @@
   <depend>sal</depend>
   <depend>mtl</depend>
   <depend targetArch="ppc">printx</depend>
+  <depend>gnu-language</depend>
   <kernelFile kfs="hypstart">lib$(PROJECT_NAME).so</kernelFile>
   <copyToAppbin>$(BINARY)</copyToAppbin>
   <copyToAppbin>$(BINARY).dbg</copyToAppbin>
