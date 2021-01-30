@@ -2187,7 +2187,7 @@ time_t pic32_time(time_t* timer)
 time_t deos_time(time_t* timer)
 {
     const uint32_t systemTickTimeInHz = 1000000 / systemTickInMicroseconds();
-    uint32_t *systemTickPtr = systemTickPointer();
+    const volatile uint32_t *systemTickPtr = systemTickPointer();
 
     if (timer != NULL)
         *timer = *systemTickPtr/systemTickTimeInHz;

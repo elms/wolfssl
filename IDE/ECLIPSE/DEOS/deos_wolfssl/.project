@@ -50,11 +50,6 @@
 			<locationURI>WOLFSSL_ROOT/wolfssl</locationURI>
 		</link>
 		<link>
-			<name>src/bio.c</name>
-			<type>1</type>
-			<locationURI>WOLFSSL_ROOT/src/bio.c</locationURI>
-		</link>
-		<link>
 			<name>src/crl.c</name>
 			<type>1</type>
 			<locationURI>WOLFSSL_ROOT/src/crl.c</locationURI>
@@ -223,11 +218,6 @@
 			<name>wolfcrypt/src/error.c</name>
 			<type>1</type>
 			<locationURI>WOLFSSL_ROOT/wolfcrypt/src/error.c</locationURI>
-		</link>
-		<link>
-			<name>wolfcrypt/src/evp.c</name>
-			<type>1</type>
-			<locationURI>WOLFSSL_ROOT/wolfcrypt/src/evp.c</locationURI>
 		</link>
 		<link>
 			<name>wolfcrypt/src/fe_448.c</name>
@@ -468,11 +458,6 @@
 			<name>wolfcrypt/src/memory.c</name>
 			<type>1</type>
 			<locationURI>WOLFSSL_ROOT/wolfcrypt/src/memory.c</locationURI>
-		</link>
-		<link>
-			<name>wolfcrypt/src/misc.c</name>
-			<type>1</type>
-			<locationURI>WOLFSSL_ROOT/wolfcrypt/src/misc.c</locationURI>
 		</link>
 		<link>
 			<name>wolfcrypt/src/pkcs12.c</name>
