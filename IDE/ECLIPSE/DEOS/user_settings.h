@@ -28,8 +28,6 @@
 
 #define WOLFSSL_DEOS
 
-#define NO_TFM_64BIT
-
 /* You can select none or all of the following tests
 using #define instead of #undef.
 By default, all four tests run*/
