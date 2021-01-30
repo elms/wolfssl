@@ -95,6 +95,11 @@
 			<locationURI>WOLFSSL_ROOT/src/wolfio.c</locationURI>
 		</link>
 		<link>
+			<name>wolfcrypt/benchmark</name>
+			<type>2</type>
+			<locationURI>WOLFSSL_ROOT/wolfcrypt/benchmark</locationURI>
+		</link>
+		<link>
 			<name>wolfcrypt/test</name>
 			<type>2</type>
 			<locationURI>WOLFSSL_ROOT/wolfcrypt/test</locationURI>

@@ -6022,7 +6022,7 @@ exit_ed_verify:
     double current_time(int reset)
     {
         const uint32_t systemTickTimeInHz = 1000000 / systemTickInMicroseconds();
-        uint32_t *systemTickPtr = systemTickPointer();
+        const volatile uint32_t *systemTickPtr = systemTickPointer();
 
         (void)reset;
 
