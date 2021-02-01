@@ -4,6 +4,11 @@
   <targetArch>ppc</targetArch>
   <fpuType>none</fpuType>
   <variant>diagnostic</variant>
+  <copyToAppbin>$(BINARY)</copyToAppbin>
+  <kernelFile>$(PROJECT_NAME).exe</kernelFile>
+  <copyToEtc>config/mailbox-transport.config</copyToEtc>
+  <kernelFile>mailbox-transport.config</kernelFile>
+  <copyToAppbin>$(BINARY).dbg</copyToAppbin>
   <depend>kernel</depend>
   <depend>video</depend>
   <depend>sal</depend>
@@ -18,7 +23,12 @@
   <gccCppCompileDirectories targetArch="ppc">$(DESK_DIR)/ppc/include</gccCppCompileDirectories>
   <gccCppCompileDirectories targetArch="x86">$(DESK_DIR)/x86/include</gccCppCompileDirectories>
   <gccCppCompileDirectories>$(DESK_DIR)/include</gccCppCompileDirectories>
+  <gccCppCompileDirectories>$(PROJECT_DIR.wolfssl)/..</gccCppCompileDirectories>
   <gccCppCompileDirectories>$(PROJECT_DIR.wolfssl)/../../../..</gccCppCompileDirectories>
   <gccCppCompileDirectories>$(PROJECT_DIR.printx)/code</gccCppCompileDirectories>
   <gccCppCompileDefinedMacros>WOLFSSL_USER_SETTINGS</gccCppCompileDefinedMacros>
+  <gccCCompileDirectories targetArch="arm">$(DESK_DIR)/arm/include</gccCCompileDirectories>
+  <gccCCompileDirectories targetArch="ppc">$(DESK_DIR)/ppc/include</gccCCompileDirectories>
+  <gccCCompileDirectories targetArch="x86">$(DESK_DIR)/x86/include</gccCCompileDirectories>
+  <gccCCompileDirectories>$(DESK_DIR)/include</gccCCompileDirectories>
 </project>

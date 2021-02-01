@@ -1,10 +1,10 @@
 <?xml version = "1.0" encoding="ISO-8859-1"?>
 <processTemplate
-     name = "UDP-vs-TCP-process-template"
+     name = "wolfssl-dtls-process-template"
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "-1432244399"
+     validityKey = "1422852235"
      breakAtStartup = "no"
      mutexQuota = "5"
      semaphoreQuota = "10"
@@ -21,7 +21,7 @@
      threadQuota = "3"
      comment = "The quota values were fine-tuned using the status monitor."
      addlRamPagesForExecuteOutOfRam = "0"
-     executableName = "udp-vs-tcp.exe"
+     executableName = "wolfssl-dtls-client.exe"
      attachedResourceQuota = "0"
      threadStackVASGap = "yes"
      tlsSpaceInBytes = "0"
@@ -68,7 +68,7 @@
    </usedFeatureSets>
    <processInstances>
       <processInstance
-           name = "UDP-vs-TCP-process"
+           name = "dtls-process"
            dataParameter = "0"
            autoCreated = "yes"
            username = "default"
@@ -82,17 +82,6 @@
       </processInstance>
    </processInstances>
    <threadTemplates>
-      <threadTemplate
-           name = "TCPThreadTemplate"
-           budget = "500"
-           instanceCount = "1"
-           slackEnabled = "yes"
-           stackSizeInPages = "20"
-           period = "fastest"
-           namesOfMutexesLocked = ""
-           usedToCreateISRThread = "no"
-           schedulerName = "default-core-0"
-      ></threadTemplate>
       <threadTemplate
            name = "UDPThreadTemplate"
            budget = "2000"
@@ -124,12 +113,6 @@
       ></mutexTemplate>
    </mutexTemplates>
    <threadNames>
-      <threadName
-           name = "TCPserver"
-           isMainThread = "no"
-           period = "fastest"
-           schedulerName = "default-core-0"
-      ></threadName>
       <threadName
            name = "UDPserver"
            isMainThread = "no"
