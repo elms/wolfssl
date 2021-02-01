@@ -332,7 +332,7 @@
     /* Socket Addr Support */
     #ifdef HAVE_SOCKADDR
         typedef struct sockaddr         SOCKADDR;
-        typedef struct sockaddr_storage SOCKADDR_S;
+        typedef struct sockaddr_in SOCKADDR_S;
         typedef struct sockaddr_in      SOCKADDR_IN;
         #ifdef WOLFSSL_IPV6
             typedef struct sockaddr_in6 SOCKADDR_IN6;

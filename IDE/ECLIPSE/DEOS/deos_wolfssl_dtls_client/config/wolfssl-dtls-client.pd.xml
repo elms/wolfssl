@@ -4,7 +4,7 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "1422852235"
+     validityKey = "-1973203673"
      breakAtStartup = "no"
      mutexQuota = "5"
      semaphoreQuota = "10"
