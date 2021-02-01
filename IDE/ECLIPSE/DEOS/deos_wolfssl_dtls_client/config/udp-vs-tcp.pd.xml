@@ -1,0 +1,146 @@
+<?xml version = "1.0" encoding="ISO-8859-1"?>
+<processTemplate
+     name = "UDP-vs-TCP-process-template"
+     pomSizeInPages = "automatic"
+     mailboxQuota = "2"
+     systemMemoryObjectQuota = "0"
+     validityKey = "-1432244399"
+     breakAtStartup = "no"
+     mutexQuota = "5"
+     semaphoreQuota = "10"
+     envelopeQuota = "10"
+     memoryObjectQuota = "2"
+     crcAtProcessCreation = "no"
+     largestAMOSizeInPages = "4096"
+     processAliasQuota = "0"
+     toolVersion = "3.49.0"
+     inDebugSet = "no"
+     attachedMemoryObjectQuota = "1"
+     eventQuota = "0"
+     executeFromRAM = "no"
+     threadQuota = "3"
+     comment = "The quota values were fine-tuned using the status monitor."
+     addlRamPagesForExecuteOutOfRam = "0"
+     executableName = "udp-vs-tcp.exe"
+     attachedResourceQuota = "0"
+     threadStackVASGap = "yes"
+     tlsSpaceInBytes = "0"
+     addTLSToStack = "no"
+     argumentQuota = "0"
+     mountQuota = "0"
+     pipc_consumeHandlePrefix = "deprecated"
+     pipc_produceHandlePrefix = "deprecated"
+     pipc_declareConsumeFail = "deprecated"
+     pipc_declareProduceFail = "deprecated"
+     pipc_includeFileFail = "deprecated"
+     pipc_initializeConsumeHandles = "no"
+     pipc_codeStyle = "C"
+     capabilities = "interprocessInterrogationServices"
+     exceptionHandlerProtocolVersion = "1"
+     xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation = "ddci:/xsd/pd.xsd"
+   >
+   <logicalMemoryPools>
+      <pool
+           platformMemoryPool = "0"
+           id = "0"
+           name = ""
+           pagesNeeded = "500"
+           initialPool = "yes"
+           singleMappingRequired = "no"
+      ></pool>
+   </logicalMemoryPools>
+   <usedFeatureSets>
+      <usedFeatureSet
+           name = "libansi"
+           versionRequirement = "none"
+           versionNumber = "none"
+           featureSetUndefinedAction = "error"
+         >
+      </usedFeatureSet>
+      <usedFeatureSet
+           name = "libsal"
+           versionRequirement = "none"
+           versionNumber = "none"
+           featureSetUndefinedAction = "error"
+         >
+      </usedFeatureSet>
+   </usedFeatureSets>
+   <processInstances>
+      <processInstance
+           name = "UDP-vs-TCP-process"
+           dataParameter = "0"
+           autoCreated = "yes"
+           username = "default"
+           groupname = "default"
+           reservedProcessNames = ""
+           reservedMemoryObjectNames = ""
+           argvCommandLineParameters = ""
+           envpCommandLineParameters = ""
+           fileSystemSearchPath = "/"
+         >
+      </processInstance>
+   </processInstances>
+   <threadTemplates>
+      <threadTemplate
+           name = "TCPThreadTemplate"
+           budget = "500"
+           instanceCount = "1"
+           slackEnabled = "yes"
+           stackSizeInPages = "20"
+           period = "fastest"
+           namesOfMutexesLocked = ""
+           usedToCreateISRThread = "no"
+           schedulerName = "default-core-0"
+      ></threadTemplate>
+      <threadTemplate
+           name = "UDPThreadTemplate"
+           budget = "2000"
+           instanceCount = "1"
+           slackEnabled = "no"
+           stackSizeInPages = "20"
+           period = "fastest"
+           namesOfMutexesLocked = ""
+           usedToCreateISRThread = "no"
+           schedulerName = "default-core-0"
+      ></threadTemplate>
+      <threadTemplate
+           name = "mainThreadTemplate"
+           budget = "500"
+           instanceCount = "1"
+           slackEnabled = "no"
+           stackSizeInPages = "2"
+           period = "fastest"
+           namesOfMutexesLocked = ""
+           usedToCreateISRThread = "no"
+           schedulerName = "default-core-0"
+      ></threadTemplate>
+   </threadTemplates>
+   <mutexTemplates>
+      <mutexTemplate
+           name = "protectWolfSSLTemp"
+           lockTimeInUsec = "40"
+           priority = "fastest"
+      ></mutexTemplate>
+   </mutexTemplates>
+   <threadNames>
+      <threadName
+           name = "TCPserver"
+           isMainThread = "no"
+           period = "fastest"
+           schedulerName = "default-core-0"
+      ></threadName>
+      <threadName
+           name = "UDPserver"
+           isMainThread = "no"
+           period = "fastest"
+           schedulerName = "default-core-0"
+      ></threadName>
+      <threadName
+           name = "main"
+           isMainThread = "yes"
+           period = "fastest"
+           schedulerName = "default-core-0"
+      ></threadName>
+   </threadNames>
+</processTemplate>
