@@ -4,7 +4,7 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "1731016434"
+     validityKey = "1970080120"
      breakAtStartup = "yes"
      mutexQuota = "5"
      semaphoreQuota = "10"
@@ -98,7 +98,7 @@
    </processInstances>
    <threadTemplates>
       <threadTemplate
-           name = "UDPThreadTemplate"
+           name = "DTLSThreadTemplate"
            budget = "2000"
            instanceCount = "1"
            slackEnabled = "no"
@@ -129,7 +129,7 @@
    </mutexTemplates>
    <threadNames>
       <threadName
-           name = "UDPserver"
+           name = "DTLSclient"
            isMainThread = "no"
            period = "fastest"
            schedulerName = "default-core-0"

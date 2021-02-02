@@ -6,33 +6,6 @@
 #include <mem.h>
 #include <string.h>
 
-// *************************************************************************************************
-// Description: Introduction to socket programming within Deos.
-// This example demonstrates the basic use of the Deos Socket API Library, the Mailbox Transport
-// Library and the Network Server Process by setting up a UDP and a TCP connection.  The Socket API
-// Library relies on functions within the ANSI Library, and the Mailbox Transport Library requires a
-// configuration file (mailbox-transport.config).  All of theses libraries and the config file must
-// be loaded onto the target, and the C++ link options "Additional Options" within OpenArbor must
-// include: -lsal -lansi -lmtl.
-//
-// The Deos Network Server is based on lwIP. Access to lwIP network stack socket capability and
-// services is provided through the Socket Library API. Lack of Socket API support indicates
-// unsupported lwIP service(s).  Please refer to the User Guide for the Deos LWIP Network Stack for
-// details on which services are supported.
-//
-// To run this example, load your executable and mailbox-transport.config file onto the target,
-// along with the libraries described above.  The main thread of the application creates two threads,
-// one for the UDP connection and one for the TCP connection.  Once the application is running, you
-// need to create the UDP and TCP clients, as follows:
-//
-// To create the UDP client, execute the UDP-echo.py script from a DESK command prompt.  This python
-// script will prompt you to type anything.  If everything is loaded properly, you will see your
-// data displayed on your target and echoed back to the DESK window.
-//
-// To create the TCP client, create a telnet session with the target. You will be prompted to enter
-// some text.  If everything is loaded properly, the text you entered will be displayed on the
-// target and echoed back to your telnet window.
-//**************************************************************************************************
 
 void goToSleep()
 //**************************************************************************************************
@@ -42,7 +15,8 @@ void goToSleep()
 // would be lost...therefore, it's better to loop forever.
 //**************************************************************************************************
 {
-  while(1) waitUntilNextPeriod();
+  while(1)
+	  waitUntilNextPeriod();
 }
 
 
@@ -73,109 +47,24 @@ int setupTransport(clientConnectionHandleType &connectionHandle, char* connectio
   return setupStatus;
 }
 
-//#include <deos.h>
 #include <printx.h>
 
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/ssl.h>
-//#include <wolfcrypt/test/test.h>
-//#include <wolfcrypt/benchmark/benchmark.h>
 #include <wolfssl/wolfcrypt/logging.h> /* to use WOLFSSL_MSG */
-//#include <tls_wolfssl.h>
 
 #include "ca_cert.h"
 #define MAXLINE 128
 #define SERV_PORT 11111
 
-void UDPserver(uintData_t)
+#define close closesocket
+
+void dtls_client(uintData_t)
 {
-#if 0
-//**************************************************************************************************
-// Function (thread) to handle the UDP connection
-//**************************************************************************************************
-  clientConnectionHandleType UDPconnectionHandle;
-  sockaddr_in socketAddr,clientAddr;
-  int clientAddrSize = sizeof(clientAddr);
-  int UDPsocket, bindStatus, receiveLength, transmitLength;
-  char receiveBuffer[1528];
-  void * sendBuffer;
-
-  VideoStream VideoOutUDPtitle(3, 0, 1, 80);
-  VideoStream VideoOutUDP(4, 0, 2, 80);
-
-  // set up the mailbox transport
-  if (setupTransport(UDPconnectionHandle, (char*)"connectionId1") != transportSuccess)
-  {
-    VideoOutUDP << "UDP transport set up failed \n";
-    goToSleep();
-  }
-
-  // Create a UDP socket (SOCK_DGRAM); default set up is "blocking"
-  UDPsocket = socket(AF_INET, SOCK_DGRAM, 0);
-  if (UDPsocket == SOCKET_ERROR)
-  {
-    VideoOutUDP << "Error creating UDP socket \n";
-    goToSleep();
-  }
-
-    // Bind the socket to port 1501
-  socketAddr.sin_family = AF_INET;
-  socketAddr.sin_port = htons(1501);
-  socketAddr.sin_addr.s_addr = INADDR_ANY;
-  if (bindStatus = bind(UDPsocket,(sockaddr*)&socketAddr,sizeof(socketAddr)) == SOCKET_ERROR)
-  {
-    VideoOutUDP << "Error binding UDP socket \n";
-    goToSleep();
-  }
-
-  // Transport and socket were successfully set up
-  VideoOutUDPtitle << "You must create the UDP client by executing udp-echo.py from DESK command prompt";
-
-  while (1)
-  {
-    // Clear the receive buffer
-    memset(receiveBuffer, 0, sizeof(receiveBuffer));
-
-    // receive packet from the client
-    receiveLength = recvfrom(UDPsocket, receiveBuffer, 1500, 0, (sockaddr*)&clientAddr, &clientAddrSize);
-
-    if(receiveLength == SOCKET_ERROR)
-    {
-      VideoOutUDP << "UDP recvfrom() Error" <<  receiveLength << "\n";
-    }
-    else
-    {
-      VideoOutUDP.clear();
-      VideoOutUDP << "Text message from the client: \n";
-      VideoOutUDP << receiveBuffer << "\n";
-    }
-
-    // Send packet back to client
-    socketAddr.sin_addr = clientAddr.sin_addr;
-    transmitLength = sendto(UDPsocket, receiveBuffer, strlen(receiveBuffer), 0, (sockaddr*)&socketAddr, sizeof (socketAddr));
-    if(transmitLength == SOCKET_ERROR)
-    {
-      VideoOutUDP << "UDP sendto() Error" <<  transmitLength << "\n";
-    }
-    waitUntilNextPeriod();
-    // this thread loops forever, receiving and transmitting data to/from the UDP client
-  } // end of while loop
-#else
     clientConnectionHandleType UDPconnectionHandle;
-    //int clientAddrSize = sizeof(clientAddr);
-    //int UDPsocket, bindStatus, receiveLength, transmitLength;
-    //char receiveBuffer[1528];
-    //void * sendBuffer;
 
     VideoStream VideoOutUDPtitle(3, 0, 1, 80);
-    VideoStream VideoOutUDP(4, 0, 2, 80);
-
-    // set up the mailbox transport
-    if (setupTransport(UDPconnectionHandle, (char*)"connectionId1") != transportSuccess)
-    {
-        VideoOutUDP << "UDP transport set up failed \n";
-        goToSleep();
-    }
+    VideoStream VideoOutUDP(4, 0, 10, 80);
 
     /* standard variables used in a dtls client*/
     int             n = 0;
@@ -185,72 +74,66 @@ void UDPserver(uintData_t)
     struct          sockaddr_in servAddr;
     WOLFSSL*        ssl = 0;
     WOLFSSL_CTX*    ctx = 0;
-    //char            cert_array[]  = "../certs/ca-cert.pem";
-    //char*           certs = cert_array;
     char            sendLine[MAXLINE] = "test 1";
     char            recvLine[MAXLINE - 1];
+    int             ret = 0;
+    uint8_t addr[4] = {192, 168, 86, 55};
+    
+    // set up the mailbox transport
+    if (setupTransport(UDPconnectionHandle, (char*)"connectionId1") != transportSuccess)
+    {
+        VideoOutUDP << "UDP transport set up failed \n";
+        goto done;
+    }
 
-    return;
+    VideoOutUDP << "mailbox 2\n";
 
+
+    VideoOutUDP << "wolfSSL preInit \n";
     /* Initialize wolfSSL before assigning ctx */
     wolfSSL_Init();
     VideoOutUDP << "wolfSSL Init \n";
 
-    //initPrintx("");
-    //initPrintxP("");
+    initPrintx("");
+    initPrintxP("");
   
-
-    for (int i=0; i< 100; i++) {
-      VideoOutUDP << "wait " << i << "\n";
-      waitUntilNextPeriod();
-    }
-    //wolfSSL_Debugging_ON();
+    wolfSSL_Debugging_ON();
     VideoOutUDP << "wolfSSL debug\n";
+    waitUntilNextPeriod();
 
-    WOLFSSL_METHOD* method = wolfDTLSv1_2_client_method();
-    if ( (ctx = wolfSSL_CTX_new(method)) == NULL) {
-      VideoOutUDP << "wolfSSL_CTX_new error2.\n";
-        //printf("wolfSSL_CTX_new error.\n");
-        //return;// 1;
+    if ( (ctx = wolfSSL_CTX_new(wolfDTLSv1_2_client_method())) == NULL) {
+      VideoOutUDP << "wolfSSL_CTX_new error.\n";
     }
     VideoOutUDP << "wolfSSL_CTX_new \n";
 
       
     /* Load certificates into ctx variable */
 #if 0
-    if (wolfSSL_CTX_load_verify_locations(ctx, certs, 0)
-        != SSL_SUCCESS) {
-        printf("Error loading %s, please check the file.\n", certs);
-        return;// 1;
-    }
+    ret = wolfSSL_CTX_load_verify_buffer(ctx,
+                                         ca_certs,
+                                         sizeof(ca_certs),
+                                         SSL_FILETYPE_PEM);
 #else
-#if 0
-    int ret = wolfSSL_CTX_load_verify_buffer(ctx,
-                                                 ca_certs,
-                                                 sizeof(ca_certs),
-                                                 SSL_FILETYPE_PEM);
-#else
-    int ret = wolfSSL_CTX_load_verify_buffer_ex(ctx,
-                                                 ca_certs,
-                                                 sizeof(ca_certs),
-                                                 SSL_FILETYPE_PEM,
-												 0,
-												 WOLFSSL_LOAD_FLAG_DATE_ERR_OKAY);
+    ret = wolfSSL_CTX_load_verify_buffer_ex(ctx,
+                                            ca_certs,
+                                            sizeof(ca_certs),
+                                            SSL_FILETYPE_PEM,
+                                            0,
+                                            WOLFSSL_LOAD_FLAG_DATE_ERR_OKAY);
 #endif
+    
     if(ret != SSL_SUCCESS) {
-        //printf("Error loading certs\n");
-    VideoOutUDP << "wolfSSL load certs failed\n";
-        return;// 1;
+      VideoOutUDP << "wolfSSL load certs failed\n";
+      goto done;
     }
-#endif
+    
     VideoOutUDP << "wolfSSL_CTX_load_verify \n";
 
     /* Assign ssl variable */
     ssl = wolfSSL_new(ctx);
     if (ssl == NULL) {
     	VideoOutUDP << "unable to get ssl object";
-        //printf("unable to get ssl object");
-        return;// 1;
+        goto done;
     }
     VideoOutUDP << "wolfSSL_new \n";
 
@@ -258,22 +141,13 @@ void UDPserver(uintData_t)
     memset(&servAddr, 0, sizeof(servAddr));
     servAddr.sin_family = AF_INET;
     servAddr.sin_port = htons(SERV_PORT);
-#if 0
-    if (inet_pton(AF_INET, servAddr, &servAddr.sin_addr) < 1) {
-        printf("Error and/or invalid IP address");
-        return 1;
-    }
-#else
-    uint8_t addr[4] = {192, 168, 86, 55};
     memcpy(&servAddr.sin_addr, addr, 4);
-#endif
-
 
     wolfSSL_dtls_set_peer(ssl, &servAddr, sizeof(servAddr));
 
     if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         printf("cannot create a socket.");
-        return;// 1;
+        goto done;
     }
 
     /* Set the file descriptor for ssl and connect with ssl variable */
@@ -282,16 +156,16 @@ void UDPserver(uintData_t)
         err1 = wolfSSL_get_error(ssl, 0);
         printf("err = %d, %s\n", err1, wolfSSL_ERR_reason_error_string(err1));
         printf("SSL_connect failed");
-        return;// 1;
+        goto done;
     }
     VideoOutUDP << "wolfSSL_connect \n";
 
     /*****************************************************************************/
     /*                  Code for sending datagram to server                      */
     /* Loop until the user is finished */
-    //if (fgets(sendLine, MAXLINE, stdin) != NULL)
-    {
-
+    while (1) {
+    	for(int i=0; i < 1000; i++)
+    		waitUntilNextPeriod();
         /* Send sendLine to the server */
         if ( ( wolfSSL_write(ssl, sendLine, strlen(sendLine)))
              != strlen(sendLine)) {
@@ -311,116 +185,21 @@ void UDPserver(uintData_t)
         /* Add a terminating character to the generic server message */
         recvLine[n] = '\0';
         printf("rx: '%s'\n", recvLine);
-        //fputs(recvLine, stdout);
+        VideoOutUDP << "recieved: " << recvLine << "\n";
     }
-    /*                End code for sending datagram to server                    */
-    /*****************************************************************************/
 
+ done:
     /* Housekeeping */
     wolfSSL_shutdown(ssl);
     wolfSSL_free(ssl);
-    //close(sockfd);
+    close(sockfd);
     wolfSSL_CTX_free(ctx);
     wolfSSL_Cleanup();
 
-    return;// 0;
-#endif
-} // end of UDPserver
-
-void TCPserver(uintData_t)
-//***************************************************************************************************
-// Function (thread) to handle the TCP connection
-// This thread is defined as a slack consumer in the pd (process developer) xml file.  For details
-// on slack, refer to the Deos User's Guide, section "Slack Scheduling".
-//***************************************************************************************************
-{
-  clientConnectionHandleType TCPconnectionHandle;
-  sockaddr_in socketAddr;
-  int socketAddrLen = sizeof(sockaddr);
-  int TCPsocket, clientSocket, bindStatus;
-  void * sendBuffer;
-  #define MESSAGE_BUFFER_SIZE 80
-  char messageBuffer[MESSAGE_BUFFER_SIZE];
-  int numBytes, index;
-  VideoStream VideoOutTCPtitle(8, 0, 1, 80);
-  VideoStream VideoOutTCP(9, 0, 2, 80);
-
-  // set up the mailbox transport
-  if (setupTransport(TCPconnectionHandle, (char*)"connectionId2") != transportSuccess)
-  {
-    VideoOutTCP << "TCP transport set up failed \n";
-    goToSleep();
-  }
-
-	// Create a TCP socket (SOCK_STREAM) to listen for connection requests; default set up is "blocking"
-  TCPsocket = socket(AF_INET, SOCK_STREAM, 0);
-  if (TCPsocket == SOCKET_ERROR)
-  {
-    VideoOutTCP << "Error creating TCP socket \n";
-    goToSleep();
-  }
-
-  // Bind the socket to port 23
-  socketAddr.sin_family = AF_INET;
-  socketAddr.sin_port = htons(23);  // port number must be in network byte order
-  socketAddr.sin_addr.s_addr = INADDR_ANY;
-  if (bindStatus = bind(TCPsocket, (sockaddr *)&socketAddr, sizeof(sockaddr_in)) == SOCKET_ERROR)
-  {
-    VideoOutTCP << "Error binding TCP socket \n";
-    goToSleep();
-  }
-
-  // Transport and socket were successfully set up
-  VideoOutTCPtitle << "You must create the TCP client by starting a telnet session with the target";
-
-  // Listen for a connection request from a client
-  listen(TCPsocket, 1);
-
-  char greeting1[] = "Greetings from the TCP server!\r\n\r\n";
-  char greeting2[] = "Enter some text and it will be echoed back:\r\n\r\n";
-
-  while (1)
-  {
-    // Accept a connection request from the client, and create a socket for communicating with the client.
-    clientSocket = accept(TCPsocket, (sockaddr *)&socketAddr, &socketAddrLen);
-
-    // Send the greeting to the client.
-    send(clientSocket, greeting1, sizeof(greeting1), 0);
-    send(clientSocket, greeting2, sizeof(greeting2), 0);
-
-    while (1)
-    {
-      index = 0;
-      // Receive characters from the TCP client until end-of-line is detected or the connection is closed.
-      // The logic handles clients that send an entire line at once, or individual characters.
-      // Messages containing control characters are ignored.
-      do
-      {
-        numBytes = recv(clientSocket, messageBuffer+index, MESSAGE_BUFFER_SIZE-index, 0);
-        if (((messageBuffer[index] >= 0x20) && (messageBuffer[index] <= 0x7E)) ||
-            (messageBuffer[index] == '\r') || (messageBuffer[index] == '\n')) 
-        {
-          index += numBytes;
-        }
-      }
-      while ((messageBuffer[index-2] != '\r') && (messageBuffer[index-1] != '\n') && (numBytes > 0));
-
-      if (numBytes == 0) break;
-
-      // Echo the received line of text back to the client
-      messageBuffer[index]=0; // add null terminator to string
-      send(clientSocket, messageBuffer, index, 0);
-
-      // stream the message to the video display
-      VideoOutTCP.clear();
-      VideoOutTCP << "Text message from the client:\n";
-      messageBuffer[index-2]=0; // "replace" the cr+lf with a null terminator
-      VideoOutTCP << messageBuffer << "\n";
-    } // loop indefinitely, receiving/transmitting data to/from the TCP client
-
-    closesocket(clientSocket);
-  }
-} // end of TCPserver
+    while(1)
+  	  waitUntilNextPeriod();
+    return;
+}
 
 
 int main(void)
@@ -431,7 +210,7 @@ int main(void)
 //***************************************************************************************************
 {
   VideoStream VideoOutMain(0, 0, 3, 80);
-  VideoOutMain << "UDP vs TCP Socket Example";
+  VideoOutMain << "wolfSSL DTLS client Example";
 
   // taken from hello-world-timer.cpp
   struct tm starttime = { 0, 30, 12, 1, 12, 2020-1900, 0, 0, 0 };
@@ -443,22 +222,15 @@ int main(void)
   // this will only take effect, if time-control is set in the xml-file
   // if not, Jan 1 1970, 00:00:00 will be the date
 
-  // Create the UDP and TCP server threads
-  thread_handle_t UDPhandle, TCPhandle;
+  // Create client thread
+  thread_handle_t dtls_handle;
   threadStatus ts;
-  ts = createThread("UDPserver", "UDPThreadTemplate", UDPserver, 0, &UDPhandle );
+  ts = createThread("DTLSclient", "DTLSThreadTemplate", dtls_client, 0, &dtls_handle );
   if (ts != threadSuccess)
   {
-    VideoOutMain << "Unable to create UDP server thread " << (uint32_t)ts << endl;
+    VideoOutMain << "Unable to create DTLS thread " << (uint32_t)ts << endl;
   }
 
-  #if 0
-  ts = createThread("TCPserver", "TCPThreadTemplate", TCPserver, 0, &TCPhandle );
-  if (ts != threadSuccess)
-  {
-    VideoOutMain << "Unable to create TCP server thread " << (uint32_t)ts << endl;
-  }
-#endif
-   // Let's go ahead and delete this thread
-   deleteThread(currentThreadHandle());
+  // Let's go ahead and delete this thread
+  deleteThread(currentThreadHandle());
 }
