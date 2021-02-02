@@ -105,7 +105,7 @@ You can get the current time from https://www.unixtimestamp.com/
 
 #endif
 
-#define printf printx
+//#define printf printx
 
 #ifdef __cplusplus
     }   /* extern "C" */

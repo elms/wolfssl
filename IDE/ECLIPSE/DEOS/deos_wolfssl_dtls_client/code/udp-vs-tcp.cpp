@@ -74,7 +74,7 @@ int setupTransport(clientConnectionHandleType &connectionHandle, char* connectio
 }
 
 //#include <deos.h>
-//#include <printx.h>
+#include <printx.h>
 
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/ssl.h>
@@ -224,10 +224,19 @@ void UDPserver(uintData_t)
         return;// 1;
     }
 #else
+#if 0
     int ret = wolfSSL_CTX_load_verify_buffer(ctx,
-                                             ca_certs,
-                                             sizeof(ca_certs),
-                                             SSL_FILETYPE_PEM);
+                                                 ca_certs,
+                                                 sizeof(ca_certs),
+                                                 SSL_FILETYPE_PEM);
+#else
+    int ret = wolfSSL_CTX_load_verify_buffer_ex(ctx,
+                                                 ca_certs,
+                                                 sizeof(ca_certs),
+                                                 SSL_FILETYPE_PEM,
+												 0,
+												 WOLFSSL_LOAD_FLAG_DATE_ERR_OKAY);
+#endif
     if(ret != SSL_SUCCESS) {
         //printf("Error loading certs\n");
     VideoOutUDP << "wolfSSL load certs failed\n";
@@ -255,7 +264,7 @@ void UDPserver(uintData_t)
         return 1;
     }
 #else
-    uint8_t addr[4] = {192, 168, 19, 1};
+    uint8_t addr[4] = {192, 168, 86, 55};
     memcpy(&servAddr.sin_addr, addr, 4);
 #endif
 
@@ -423,6 +432,16 @@ int main(void)
 {
   VideoStream VideoOutMain(0, 0, 3, 80);
   VideoOutMain << "UDP vs TCP Socket Example";
+
+  // taken from hello-world-timer.cpp
+  struct tm starttime = { 0, 30, 12, 1, 12, 2020-1900, 0, 0, 0 };
+  // startdate: Dev 1 2020, 12:30:00
+  struct timespec ts_date;
+  ts_date.tv_sec  = mktime(&starttime);
+  ts_date.tv_nsec = 0LL;
+  int res1 = clock_settime(CLOCK_REALTIME, &ts_date);
+  // this will only take effect, if time-control is set in the xml-file
+  // if not, Jan 1 1970, 00:00:00 will be the date
 
   // Create the UDP and TCP server threads
   thread_handle_t UDPhandle, TCPhandle;

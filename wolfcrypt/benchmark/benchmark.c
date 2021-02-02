@@ -61,8 +61,6 @@
     #define printf PRINTF
 #elif defined(WOLFSSL_DEOS)
     #include <deos.h>
-    #undef printf
-    #define printf printx
 #elif defined(MICRIUM)
     #if (OS_VERSION < 50000)
         #include <bsp_ser.h>

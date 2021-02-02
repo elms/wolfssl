@@ -4,8 +4,8 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "-1973203673"
-     breakAtStartup = "no"
+     validityKey = "1731016434"
+     breakAtStartup = "yes"
      mutexQuota = "5"
      semaphoreQuota = "10"
      envelopeQuota = "10"
@@ -65,6 +65,21 @@
            featureSetUndefinedAction = "error"
          >
       </usedFeatureSet>
+      <usedFeatureSet
+           name = "libtime"
+           versionRequirement = "none"
+           versionNumber = "none"
+           featureSetUndefinedAction = "error"
+         >
+         <usedFeature
+              name = "time-control"
+            >
+            <usedFeatureParameter
+                 name = "processInstanceName"
+                 value = "^dtls-process^"
+            ></usedFeatureParameter>
+         </usedFeature>
+      </usedFeatureSet>
    </usedFeatureSets>
    <processInstances>
       <processInstance
@@ -87,7 +102,7 @@
            budget = "2000"
            instanceCount = "1"
            slackEnabled = "no"
-           stackSizeInPages = "20"
+           stackSizeInPages = "200"
            period = "fastest"
            namesOfMutexesLocked = ""
            usedToCreateISRThread = "no"
