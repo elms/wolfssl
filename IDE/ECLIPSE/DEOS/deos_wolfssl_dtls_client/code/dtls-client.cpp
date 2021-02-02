@@ -78,7 +78,8 @@ void dtls_client(uintData_t)
     char            recvLine[MAXLINE - 1];
     int             ret = 0;
     uint8_t addr[4] = {192, 168, 86, 55};
-    
+    int count = 0;
+
     // set up the mailbox transport
     if (setupTransport(UDPconnectionHandle, (char*)"connectionId1") != transportSuccess)
     {
@@ -86,19 +87,14 @@ void dtls_client(uintData_t)
         goto done;
     }
 
-    VideoOutUDP << "mailbox 2\n";
 
-
-    VideoOutUDP << "wolfSSL preInit \n";
     /* Initialize wolfSSL before assigning ctx */
     wolfSSL_Init();
-    VideoOutUDP << "wolfSSL Init \n";
 
     initPrintx("");
     initPrintxP("");
   
     wolfSSL_Debugging_ON();
-    VideoOutUDP << "wolfSSL debug\n";
     waitUntilNextPeriod();
 
     if ( (ctx = wolfSSL_CTX_new(wolfDTLSv1_2_client_method())) == NULL) {
@@ -164,8 +160,11 @@ void dtls_client(uintData_t)
     /*                  Code for sending datagram to server                      */
     /* Loop until the user is finished */
     while (1) {
-    	for(int i=0; i < 1000; i++)
-    		waitUntilNextPeriod();
+        if (count != 0)
+            for(int i=0; i < 100; i++)
+                waitUntilNextPeriod();
+
+        snprintf(sendLine, MAXLINE, "test %04d", count++);
         /* Send sendLine to the server */
         if ( ( wolfSSL_write(ssl, sendLine, strlen(sendLine)))
              != strlen(sendLine)) {
