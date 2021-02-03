@@ -4,7 +4,7 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "1970080120"
+     validityKey = "-120027380"
      breakAtStartup = "yes"
      mutexQuota = "5"
      semaphoreQuota = "10"
@@ -45,7 +45,7 @@
            platformMemoryPool = "0"
            id = "0"
            name = ""
-           pagesNeeded = "500"
+           pagesNeeded = "600"
            initialPool = "yes"
            singleMappingRequired = "no"
       ></pool>
@@ -99,10 +99,10 @@
    <threadTemplates>
       <threadTemplate
            name = "DTLSThreadTemplate"
-           budget = "2000"
+           budget = "600"
            instanceCount = "1"
            slackEnabled = "no"
-           stackSizeInPages = "200"
+           stackSizeInPages = "50"
            period = "fastest"
            namesOfMutexesLocked = ""
            usedToCreateISRThread = "no"
