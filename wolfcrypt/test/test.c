@@ -153,6 +153,10 @@ _Pragma("GCC diagnostic ignored \"-Wunused-function\"");
     int dc_log_printf(char*, ...);
     #undef printf
     #define printf dc_log_printf
+#elif defined(WOLFSSL_DEOS)
+    #include <printx.h>
+    #undef printf
+    #define printf printx
 #else
     #ifdef XMALLOC_USER
         #include <stdlib.h>  /* we're using malloc / free direct here */

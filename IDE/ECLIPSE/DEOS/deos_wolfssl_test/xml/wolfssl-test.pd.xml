@@ -4,8 +4,8 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "0"
      systemMemoryObjectQuota = "0"
-     validityKey = "473665603"
-     breakAtStartup = "no"
+     validityKey = "-126967084"
+     breakAtStartup = "yes"
      mutexQuota = "0"
      semaphoreQuota = "0"
      envelopeQuota = "0"
@@ -101,9 +101,9 @@
    <threadTemplates>
       <threadTemplate
            name = "mainThreadTemplate"
-           budget = "600"
+           budget = "2000"
            instanceCount = "1"
-           slackEnabled = "no"
+           slackEnabled = "yes"
            stackSizeInPages = "50"
            period = "fastest"
            namesOfMutexesLocked = ""

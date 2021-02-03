@@ -29,7 +29,7 @@
 #define ROUND_UP(x, align)  (((int) (x) + (align - 1)) & ~(align - 1))
 #define SIZEOF_HEADER sizeof(size_t)  /* tracks size of allocated block */
 
-#define HEAP_SIZE_MAX   (1*1024*1024)
+#define HEAP_SIZE_MAX   (2*1024*1024)
 
 static size_t allocatedMemory = 0;
 

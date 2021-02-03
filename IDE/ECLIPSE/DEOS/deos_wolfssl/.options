@@ -10,7 +10,7 @@
   <depend>deos-time</depend>
   <depend>sal</depend>
   <depend>mtl</depend>
-  <depend targetArch="ppc">printx</depend>
+  <depend>printx</depend>
   <depend>gnu-language</depend>
   <kernelFile kfs="hypstart">lib$(PROJECT_NAME).so</kernelFile>
   <copyToAppbin>$(BINARY)</copyToAppbin>
@@ -22,6 +22,7 @@
   <gccCCompileDirectories>$(PROJECT_DIR.wolfssl)/../../../..</gccCCompileDirectories>
   <gccCCompileDirectories>$(PROJECT_DIR.wolfssl)/../../../../fips</gccCCompileDirectories>
   <gccCCompileDirectories>$(PROJECT_DIR.wolfssl)/..</gccCCompileDirectories>
+  <gccCCompileDirectories>$(PROJECT_DIR.printx)/code</gccCCompileDirectories>
   <gccCCompileDefinedMacros>WOLFSSL_USER_SETTINGS</gccCCompileDefinedMacros>
   <gccCppLinkDirectories targetArch="arm">$(DESK_DIR)/arm/appbin</gccCppLinkDirectories>
   <gccCppLinkDirectories targetArch="ppc">$(DESK_DIR)/ppc/appbin</gccCppLinkDirectories>

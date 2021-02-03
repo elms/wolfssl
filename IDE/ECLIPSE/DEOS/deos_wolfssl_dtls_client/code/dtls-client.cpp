@@ -51,7 +51,7 @@ int setupTransport(clientConnectionHandleType &connectionHandle, char* connectio
 
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/ssl.h>
-#include <wolfssl/wolfcrypt/logging.h> /* to use WOLFSSL_MSG */
+//#include <wolfssl/wolfcrypt/logging.h> /* to use WOLFSSL_MSG */
 
 #include "ca_cert.h"
 #define MAXLINE 128
