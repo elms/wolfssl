@@ -99,6 +99,7 @@ void dtls_client(uintData_t)
 
     if ( (ctx = wolfSSL_CTX_new(wolfDTLSv1_2_client_method())) == NULL) {
       VideoOutUDP << "wolfSSL_CTX_new error.\n";
+      goto done;
     }
     VideoOutUDP << "wolfSSL_CTX_new \n";
 
