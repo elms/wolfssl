@@ -31,4 +31,5 @@
   <gccCCompileDirectories targetArch="ppc">$(DESK_DIR)/ppc/include</gccCCompileDirectories>
   <gccCCompileDirectories targetArch="x86">$(DESK_DIR)/x86/include</gccCCompileDirectories>
   <gccCCompileDirectories>$(DESK_DIR)/include</gccCCompileDirectories>
+  <gccCCompileDefinedMacros>MALLOC_PAGES=512</gccCCompileDefinedMacros>
 </project>

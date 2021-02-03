@@ -16,6 +16,7 @@
 		<pathentry base-path="C:/" include="./" kind="inc" path="" system="true"/>
 		<pathentry kind="mac" name="DIAGNOSTIC" path="" value=""/>
 		<pathentry kind="mac" name="WOLFSSL_USER_SETTINGS" path="" value=""/>
+		<pathentry kind="mac" name="MALLOC_PAGES" path="" value="512"/>
 		<pathentry kind="mac" name="__OpenArbor_editor" path="" value=""/>
 		<pathentry kind="mac" name="__DBL_MIN_EXP__" path="" value="(-1021)"/>
 		<pathentry kind="mac" name="__FLT32X_MAX_EXP__" path="" value="1024"/>

@@ -4,7 +4,7 @@
      pomSizeInPages = "automatic"
      mailboxQuota = "2"
      systemMemoryObjectQuota = "0"
-     validityKey = "-120027380"
+     validityKey = "-216550044"
      breakAtStartup = "yes"
      mutexQuota = "5"
      semaphoreQuota = "10"
@@ -26,7 +26,7 @@
      threadStackVASGap = "yes"
      tlsSpaceInBytes = "0"
      addTLSToStack = "no"
-     argumentQuota = "0"
+     argumentQuota = "32"
      mountQuota = "0"
      pipc_consumeHandlePrefix = "deprecated"
      pipc_produceHandlePrefix = "deprecated"
@@ -91,7 +91,7 @@
            reservedProcessNames = ""
            reservedMemoryObjectNames = ""
            argvCommandLineParameters = ""
-           envpCommandLineParameters = ""
+           envpCommandLineParameters = "^ MALLOC_PAGES=512^"
            fileSystemSearchPath = "/"
          >
       </processInstance>
