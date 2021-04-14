@@ -55,6 +55,7 @@ AS_IF([ test -n "$CFLAG_VISIBILITY" ], [
        AM_CFLAGS="$AM_CPPFLAGS $CFLAG_VISIBILITY"
        ])
 
+AX_COMPILER_FLAGS()
 
 # Moved these size of and type checks before the library checks.
 # The library checks add the library to subsequent test compiles
@@ -65,6 +66,7 @@ AC_CHECK_SIZEOF([long])
 AC_CHECK_SIZEOF([time_t])
 AC_CHECK_TYPES([__uint128_t])
 
+AX_VCS_CHECKOUT
 
 # Distro build feature subset (Debian, Ubuntu, etc.)
 AC_ARG_ENABLE([distro],
