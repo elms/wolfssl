@@ -3358,7 +3358,7 @@ static WC_INLINE int myDhCallback(WOLFSSL* ssl, struct DhKey* key,
         ret, privSz, pubKeySz, *outlen);
 
     return ret;
-};
+}
 
 #endif /* !NO_DH */
 
