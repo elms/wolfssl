@@ -65,7 +65,7 @@
 
 
 /* Crypto Information Structure for callbacks */
-typedef struct wc_CryptoInfo {
+__extension__ typedef struct wc_CryptoInfo {
     int algo_type; /* enum wc_AlgoType */
 #if !defined(NO_RSA) || defined(HAVE_ECC)
     struct {

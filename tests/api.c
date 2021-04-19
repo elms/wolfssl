@@ -23092,7 +23092,7 @@ static void test_wc_PKCS7_InitWithCert (void)
 
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        unsigned char    cert[sizeof_client_cert_der_2048];
+        __extension__ unsigned char    cert[sizeof_client_cert_der_2048];
         int              certSz = (int)sizeof(cert);
         XMEMSET(cert, 0, certSz);
         XMEMCPY(cert, client_cert_der_2048, sizeof_client_cert_der_2048);
@@ -23251,8 +23251,8 @@ static void test_wc_PKCS7_EncodeData (void)
 
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        unsigned char cert[sizeof_client_cert_der_2048];
-        unsigned char key[sizeof_client_key_der_2048];
+        __extension__ unsigned char cert[sizeof_client_cert_der_2048];
+        __extension__ unsigned char key[sizeof_client_key_der_2048];
         int certSz = (int)sizeof(cert);
         int keySz = (int)sizeof(key);
         XMEMSET(cert, 0, certSz);
@@ -23417,15 +23417,15 @@ static void test_wc_PKCS7_EncodeSignedData(void)
     PKCS7*      pkcs7;
     WC_RNG      rng;
     byte        output[FOURK_BUF];
-    byte        badOut[0];
+    byte        badOut[1];
     word32      outputSz = (word32)sizeof(output);
-    word32      badOutSz = (word32)sizeof(badOut);
+    word32      badOutSz = 0;
     byte        data[] = "Test data to encode.";
 
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        byte        key[sizeof_client_key_der_2048];
-        byte        cert[sizeof_client_cert_der_2048];
+        __extension__ byte        key[sizeof_client_key_der_2048];
+        __extension__ byte        cert[sizeof_client_cert_der_2048];
         word32      keySz = (word32)sizeof(key);
         word32      certSz = (word32)sizeof(cert);
         XMEMSET(key, 0, keySz);
@@ -23570,8 +23570,8 @@ static void test_wc_PKCS7_EncodeSignedData_ex(void)
 
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        byte        key[sizeof_client_key_der_2048];
-        byte        cert[sizeof_client_cert_der_2048];
+        __extension__ byte        key[sizeof_client_key_der_2048];
+        __extension__ byte        cert[sizeof_client_cert_der_2048];
         word32      keySz = (word32)sizeof(key);
         word32      certSz = (word32)sizeof(cert);
         XMEMSET(key, 0, keySz);
@@ -23782,8 +23782,8 @@ static int CreatePKCS7SignedData(unsigned char* output, int outputSz,
 
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        byte        key[sizeof_client_key_der_2048];
-        byte        cert[sizeof_client_cert_der_2048];
+        __extension__ byte        key[sizeof_client_key_der_2048];
+        __extension__ byte        cert[sizeof_client_cert_der_2048];
         word32      keySz = (word32)sizeof(key);
         word32      certSz = (word32)sizeof(cert);
         XMEMSET(key, 0, keySz);
@@ -23898,8 +23898,8 @@ static void test_wc_PKCS7_VerifySignedData(void)
     byte   output[FOURK_BUF];
     word32 outputSz = sizeof(output);
     byte   data[] = "Test data to encode.";
-    byte   badOut[0];
-    word32 badOutSz = (word32)sizeof(badOut);
+    byte   badOut[1];
+    word32 badOutSz = 0;
     byte   badContent[] = "This is different content than was signed";
 
     AssertIntGT((outputSz = CreatePKCS7SignedData(output, outputSz, data,
@@ -38710,7 +38710,7 @@ static void test_wolfssl_PKCS7(void)
     byte   content[] = "Test data to encode.";
 #if !defined(NO_RSA) & defined(USE_CERT_BUFFERS_2048)
     BIO*   bio;
-    byte   key[sizeof_client_key_der_2048];
+    __extension__ byte   key[sizeof_client_key_der_2048];
     word32 keySz = (word32)sizeof(key);
 #endif
 
@@ -38788,8 +38788,8 @@ static void test_wolfSSL_PEM_write_bio_PKCS7(void)
     };
 #ifndef NO_RSA
     #if defined(USE_CERT_BUFFERS_2048)
-        byte        key[sizeof_client_key_der_2048];
-        byte        cert[sizeof_client_cert_der_2048];
+        __extension__ byte        key[sizeof_client_key_der_2048];
+        __extension__ byte        cert[sizeof_client_cert_der_2048];
         word32      keySz = (word32)sizeof(key);
         word32      certSz = (word32)sizeof(cert);
         XMEMSET(key, 0, keySz);
@@ -40667,7 +40667,7 @@ static void test_wolfssl_EVP_aes_gcm_zeroLen(void)
     byte iv[]  = {
         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
     }; /* align */
-    byte plaintxt[0];
+    byte plaintxt[1];
     int ivSz  = 12;
     int plaintxtSz = 0;
     unsigned char tag[16];
