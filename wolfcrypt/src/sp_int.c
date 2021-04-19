@@ -2513,7 +2513,7 @@ int sp_abs(sp_int* a, sp_int* r)
 #endif /* WOLFSSL_SP_INT_NEGATIVE */
 
 #if defined(WOLFSSL_SP_MATH_ALL) || !defined(NO_DH) || defined(HAVE_ECC) || \
-    (!defined(NO_RSA) && !defined(WOLFSSL_RSA_VERIFY_ONLY))
+    !defined(WOLFSSL_RSA_VERIFY_ONLY)
 /* Compare absolute value of two multi-precision numbers.
  *
  * @param  [in]  a  SP integer.
@@ -2586,7 +2586,7 @@ int sp_cmp_mag(sp_int* a, sp_int* b)
 
 #if defined(WOLFSSL_SP_MATH_ALL) || defined(HAVE_ECC) || !defined(NO_DSA) || \
     defined(OPENSSL_EXTRA) || \
-    (!defined(NO_RSA) && !defined(WOLFSSL_RSA_VERIFY_ONLY))
+    !defined(WOLFSSL_RSA_VERIFY_ONLY)
 /* Compare two multi-precision numbers.
  *
  * Assumes a and b are not NULL.
