@@ -28,6 +28,22 @@
 
 #define WOLFSSL_DEOS
 
+/* wolfSentry network introspection */
+#define WOLFSSL_WOLFSENTRY_HOOKS
+#define HAVE_EX_DATA
+#define HAVE_EX_DATA_CLEANUP_HOOKS
+
+#define WOLFSENTRY_NO_STDIO
+#define WOLFSENTRY_NO_INTTYPES_H
+#define WOLFSENTRY_NO_ASSERT_H
+#define WOLFSENTRY_SINGLETHREADED
+#define WOLFSENTRY_NO_MALLOC_BUILTIN
+#define PRIVATE_DATA_ALIGNMENT 0
+
+#define LWIP
+
+#define WOLFSENTRY_TEST_HPI pdeos_hpi
+
 /* You can select none or all of the following tests
 using #define instead of #undef.
 By default, all four tests run*/
