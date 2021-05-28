@@ -15985,6 +15985,13 @@ int wolfSSL_set_compression(WOLFSSL* ssl)
 
         ssl->IOCB_ReadCtx  = &ssl->rfd;
 
+    #ifdef WOLFSSL_DTLS
+        if (ssl->options.dtls) {
+            ssl->IOCB_ReadCtx = &ssl->buffers.dtlsCtx;
+            ssl->buffers.dtlsCtx.rfd = rfd;
+        }
+    #endif
+
         return WOLFSSL_SUCCESS;
     }
 
