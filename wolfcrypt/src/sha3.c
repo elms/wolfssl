@@ -569,8 +569,12 @@ static word64 Load64BitBigEndian(const byte* a)
     n |= ((word64)*(word16*)(a + 6)) << 48;
 
     return n;
-#else
+#elif ((WOLFSSL_GENERAL_ALIGNMENT > 0) && (WOLFSSL_GENERAL_ALIGNMENT == 8))
     return *(const word64*)a;
+#else
+    word64 n;
+    XMEMCPY(&n, a, sizeof(word64));
+    return n;
 #endif
 }
 
