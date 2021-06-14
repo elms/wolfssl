@@ -1522,6 +1522,17 @@ then
     fi
 fi
 
+AC_ARG_ENABLE([aligndata],
+    [AS_HELP_STRING([--enable-aligndata],[align data for ciphers (default: enabled)])],
+    [ ENABLED_ALIGN_DATA=$enableval ],
+    [ ENABLED_ALIGN_DATA=yes ]
+    )
+
+if test "$ENABLED_ALIGN_DATA" = "yes"
+then
+    AM_CFLAGS="$AM_CFLAGS -DWOLFSSL_USE_ALIGN -DXSTREAM_ALIGN"
+fi
+
 # INTEL RDRAND
 AC_ARG_ENABLE([intelrand],
     [AS_HELP_STRING([--enable-intelrand],[Enable Intel rdrand as preferred RNG source (default: disabled)])],
@@ -1533,7 +1544,6 @@ if test "$ENABLED_INTELRDRAND" = "yes"
 then
     AM_CFLAGS="$AM_CFLAGS -DHAVE_INTEL_RDRAND"
 fi
-
 
 # Linux af_alg
 AC_ARG_ENABLE([afalg],
