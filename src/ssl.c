@@ -548,7 +548,6 @@ WOLFSSL* wolfSSL_new(WOLFSSL_CTX* ctx)
     WOLFSSL* ssl = NULL;
     int ret = 0;
 
-    (void)ret;
     WOLFSSL_ENTER("SSL_new");
 
     if (ctx == NULL)
@@ -562,6 +561,8 @@ WOLFSSL* wolfSSL_new(WOLFSSL_CTX* ctx)
         }
 
     WOLFSSL_LEAVE("SSL_new", ret);
+    (void)ret;
+
     return ssl;
 }
 
@@ -49547,7 +49548,7 @@ static int wolfSSL_TicketKeyCb(WOLFSSL* ssl,
 
     WOLFSSL_ENTER("wolfSSL_TicketKeyCb");
 
-    if (ssl == NULL || ssl->ctx == NULL || ssl->ctx->ticketEncCtx == NULL) {
+    if (ssl == NULL || ssl->ctx == NULL || ssl->ctx->ticketEncWrapCb == NULL) {
         WOLFSSL_MSG("Bad parameter");
         return WOLFSSL_TICKET_RET_FATAL;
     }
@@ -49558,7 +49559,7 @@ static int wolfSSL_TicketKeyCb(WOLFSSL* ssl,
         WOLFSSL_MSG("wolfSSL_HMAC_CTX_Init error");
         return WOLFSSL_TICKET_RET_FATAL;
     }
-    res = ((ticketCompatCb)ssl->ctx->ticketEncCtx)(ssl, keyName,
+    res = ssl->ctx->ticketEncWrapCb(ssl, keyName,
             iv, &evpCtx, &hmacCtx, enc);
     if (res != TICKET_KEY_CB_RET_OK && res != TICKET_KEY_CB_RET_RENEW) {
         WOLFSSL_MSG("Ticket callback error");
@@ -49624,11 +49625,12 @@ end:
  */
 int wolfSSL_CTX_set_tlsext_ticket_key_cb(WOLFSSL_CTX *ctx, ticketCompatCb cb)
 {
+
     /* Set the ticket encryption callback to be a wrapper around OpenSSL
      * callback.
      */
     ctx->ticketEncCb = wolfSSL_TicketKeyCb;
-    ctx->ticketEncCtx = (void*)cb;
+    ctx->ticketEncWrapCb = cb;
 
     return WOLFSSL_SUCCESS;
 }
@@ -52984,10 +52986,10 @@ int wolfSSL_ASN1_STRING_print_ex(WOLFSSL_BIO *out, WOLFSSL_ASN1_STRING *str,
         }
         str_len++;
         if (flags & ASN1_STRFLGS_DUMP_DER){
-            hex_tmp[0] = hex_char[str->type >> 4];
-            hex_tmp[1] = hex_char[str->type & 0xf];
-            hex_tmp[2] = hex_char[str->length >> 4];
-            hex_tmp[3] = hex_char[str->length & 0xf];
+            hex_tmp[0] = hex_char[(str->type & 0xf0) >> 4];
+            hex_tmp[1] = hex_char[(str->type & 0x0f)];
+            hex_tmp[2] = hex_char[(str->length & 0xf0) >> 4];
+            hex_tmp[3] = hex_char[(str->length & 0x0f)];
             if (wolfSSL_BIO_write(out, hex_tmp, 4) != 4){
                 goto err_exit;
             }
@@ -54637,8 +54639,10 @@ error:
     XFREE(section, NULL, DYNAMIC_TYPE_PKCS7);
     if (canonSection != NULL)
         XFREE(canonSection, NULL, DYNAMIC_TYPE_PKCS7);
-    wolfSSL_BIO_free(*bcont);
-    *bcont = NULL; /* reset 'bcount' pointer to NULL on failure */
+    if (bcont) {
+        wolfSSL_BIO_free(*bcont);
+        *bcont = NULL; /* reset 'bcount' pointer to NULL on failure */
+    }
 
     return NULL;
 }

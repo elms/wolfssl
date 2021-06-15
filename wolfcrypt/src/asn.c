@@ -7706,7 +7706,7 @@ static int ConfirmSignature(SignatureCtx* sigCtx,
                     }
                     if ((ret = wc_DsaPublicKeyDecode(key, &idx, sigCtx->key.dsa,
                                                                  keySz)) != 0) {
-                        WOLFSSL_MSG("ASN Key decode error RSA");
+                        WOLFSSL_MSG("ASN Key decode error DSA");
                         goto exit_cs;
                     }
                     if (sigSz != DSA_SIG_SIZE) {
@@ -9153,8 +9153,10 @@ int DecodePolicyOID(char *out, word32 outSz, const byte *in, word32 inSz)
     val = in[inIdx++];
 
     w = XSNPRINTF(out, outSz, "%u.%u", val / 40, val % 40);
-    if (w < 0)
+    if (w < 0) {
+        w = BUFFER_E;
         goto exit;
+    }
     outIdx += w;
     val = 0;
 
@@ -9169,8 +9171,10 @@ int DecodePolicyOID(char *out, word32 outSz, const byte *in, word32 inSz)
             /* write val as text into out */
             val += in[inIdx];
             w = XSNPRINTF(out + outIdx, outSz - outIdx, ".%u", val);
-            if (w < 0)
+            if (w < 0 || (word32)w > outSz - outIdx) {
+                w = BUFFER_E;
                 goto exit;
+            }
             outIdx += w;
             val = 0;
         }
@@ -16023,7 +16027,7 @@ int EncodePolicyOID(byte *out, word32 *outSz, const char *in, void* heap)
                 oid[i++] = (byte) (((tb++) ? 0x80 : 0) | x);
             }
 
-            if ((idx+(word32)i) > *outSz) {
+            if ((idx+(word32)i) >= *outSz) {
                 XFREE(str, heap, DYNAMIC_TYPE_TMP_BUFFER);
                 return BUFFER_E;
             }
@@ -18930,7 +18934,7 @@ int wc_MIME_parse_headers(char* in, int inLen, MimeHdr** headers)
         else {
             mimeType = MIME_HDR;
         }
-        start = end = 0;
+        start = 0;
         lineLen = XSTRLEN(curLine);
         if (lineLen == 0) {
             ret = BAD_FUNC_ARG;
