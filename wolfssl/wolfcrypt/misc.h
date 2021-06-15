@@ -56,6 +56,9 @@ WOLFSSL_LOCAL
 void   ByteReverseWords(word32*, const word32*, word32);
 
 WOLFSSL_LOCAL
+word64 Load64BitBigEndian(const byte* a);
+
+WOLFSSL_LOCAL
 void XorWordsOut(wolfssl_word* r, const wolfssl_word* a, const wolfssl_word* b,
                  word32 n);
 WOLFSSL_LOCAL

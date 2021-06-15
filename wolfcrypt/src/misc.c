@@ -236,6 +236,43 @@ WC_STATIC WC_INLINE void ByteReverseWords64(word64* out, const word64* in,
 
 }
 
+
+/* Convert the array of bytes, in little-endian order, to a 64-bit integer.
+ *
+ * a  Array of bytes.
+ * returns a 64-bit integer.
+ */
+WC_STATIC WC_INLINE word64 Load64BitBigEndian(const byte* a)
+{
+#if defined(BIG_ENDIAN_ORDER) || (WOLFSSL_GENERAL_ALIGNMENT == 1)
+    word64 n = 0;
+    int i;
+
+    for (i = 0; i < 8; i++)
+        n |= (word64)a[i] << (8 * i);
+
+    return n;
+#elif ((WOLFSSL_GENERAL_ALIGNMENT > 0) && (WOLFSSL_GENERAL_ALIGNMENT == 4))
+    word64 n;
+
+    n  =          *(word32*) a;
+    n |= ((word64)*(word32*)(a + 4)) << 32;
+
+    return n;
+#elif ((WOLFSSL_GENERAL_ALIGNMENT > 0) && (WOLFSSL_GENERAL_ALIGNMENT == 2))
+    word64 n;
+
+    n  =          *(word16*) a;
+    n |= ((word64)*(word16*)(a + 2)) << 16;
+    n |= ((word64)*(word16*)(a + 4)) << 32;
+    n |= ((word64)*(word16*)(a + 6)) << 48;
+
+    return n;
+#else
+    return *(const word64*)a;
+#endif
+}
+
 #endif /* WORD64_AVAILABLE && !WOLFSSL_NO_WORD64_OPS */
 
 #ifndef WOLFSSL_NO_XOR_OPS

@@ -934,7 +934,7 @@ decouple library dependencies with standard string, memory and so on.
      * Xilinx RSA operations require alignment */
     #if defined(WOLFSSL_AESNI) || defined(WOLFSSL_ARMASM) || \
         defined(USE_INTEL_SPEEDUP) || defined(WOLFSSL_AFALG_XILINX)
-          #ifndef
+          #ifndef WOLFSSL_USE_ALIGN
               #define WOLFSSL_USE_ALIGN
           #endif
     #endif /* WOLFSSL_AESNI || WOLFSSL_ARMASM || USE_INTEL_SPEEDUP || WOLFSSL_AFALG_XILINX */

@@ -275,13 +275,10 @@ static void Hc128_SetIV(HC128* ctx, const byte* inIv)
 static WC_INLINE int DoKey(HC128* ctx, const byte* key, const byte* iv)
 {
   word32 i;
-  word32 keyc[HC128_KEY_NUMBYTES];
-
-  XMEMCPY(keyc, key, sizeof(keyc));
 
   /* Key size in bits 128 */
   for (i = 0; i < HC128_KEY_NUMBYTES; i++)
-      ctx->key[i] = LITTLE32(((word32*)keyc)[i]);
+      ctx->key[i] = LITTLE32(((word32*)key)[i]);
 
   for ( ; i < 8 ; i++) ctx->key[i] = ctx->key[i-4];
 

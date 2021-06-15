@@ -38,6 +38,14 @@
 
 #include <wolfssl/wolfcrypt/types.h>
 
+
+#ifdef NO_INLINE
+    #include <wolfssl/wolfcrypt/misc.h>
+#else
+    #define WOLFSSL_MISC_INCLUDED
+    #include <wolfcrypt/src/misc.c>
+#endif
+
 static WC_INLINE word32 load32( const void *src )
 {
 #if defined(LITTLE_ENDIAN_ORDER)
@@ -86,7 +94,7 @@ static WC_INLINE void store32( void *dst, word32 w )
 static WC_INLINE void store64( void *dst, word64 w )
 {
 #if defined(LITTLE_ENDIAN_ORDER)
-  XMEMCPY(dst, &w, sizeof(word64));
+  *( word64* )( dst ) = Load64BitBigEndian((byte*)&w);
 #else
   byte *p = ( byte * )dst;
   *p++ = ( byte )w; w >>= 8;
